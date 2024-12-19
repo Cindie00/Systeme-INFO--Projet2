@@ -1,10 +1,15 @@
 #ifndef LIB_TAR_H
 #define LIB_TAR_H
 
-#include <stdlib.h>
 #include <stddef.h>
 #include <stdint.h>
 #include <unistd.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <limits.h>
 
 typedef struct posix_header
 {                              /* byte offset */
@@ -41,6 +46,12 @@ typedef struct posix_header
 
 /* Converts an ASCII-encoded octal-based number into a regular integer */
 #define TAR_INT(char_ptr) strtol(char_ptr, NULL, 8)
+
+
+/****************** Auxiliary Functions  ************************/
+unsigned int compute_checksum(const tar_header_t *header)
+int read_next_header(int tar_fd, tar_header_t *header)
+/******** End of auxiliary functions  **************/
 
 /**
  * Checks whether the archive is valid.
@@ -147,5 +158,6 @@ int list(int tar_fd, char *path, char **entries, size_t *no_entries);
  *
  */
 ssize_t read_file(int tar_fd, char *path, size_t offset, uint8_t *dest, size_t *len);
+
 
 #endif
